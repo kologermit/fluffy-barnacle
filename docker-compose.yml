@@ -3,6 +3,7 @@ services:
   database:
     build: .
     environment:
-      - BOT_TOKEN=${BOT_TOKEN:-5469643644:AAGswk4CVHLOTVx6ZwsVglcKcxkLQeMd030}
+      - TOKEN=${TOKEN:-5469643644:AAGswk4CVHLOTVx6ZwsVglcKcxkLQeMd030}
+      - ADMINS=${ADMINS:-847721936}
     volumes:
       - "./:/bot"

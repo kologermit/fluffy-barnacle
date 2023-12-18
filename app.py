@@ -1,8 +1,7 @@
 import logging
 
 from aiogram import executor
-from aiogram import types
-from db import init, on_shutdown
+from db import init
 from handlers import dp
 from utils.notify_admins import on_startup_notify
 from utils.set_bot_commands import set_default_commands
