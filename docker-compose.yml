@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  database:
+    build: .
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN:-5469643644:AAGswk4CVHLOTVx6ZwsVglcKcxkLQeMd030}
+    volumes:
+      - "./:/bot"

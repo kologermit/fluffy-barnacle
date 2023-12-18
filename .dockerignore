@@ -1,0 +1,7 @@
+.dockerignore
+Dockerfile
+docker-compose.yml
+.gitignore
+menu.xlsx
+venv
+__pychace__
