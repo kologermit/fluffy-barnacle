@@ -11,7 +11,6 @@ class LoadSheets:
         InlineKeyboardButton(text='Описание по типам личности', callback_data='desc_of_type_persons'),
         InlineKeyboardButton(text='Авторитеты в бизнесе', callback_data='desc_of_authory_in_bussiness'),
         InlineKeyboardButton(text='Стратегия профиля в бизнесе', callback_data='desc_of_strategy_profiles'),
-        InlineKeyboardButton(text='Типы личностей', callback_data='desc_of_type_personal')
     ]
     ikb = InlineKeyboardMarkup(1).add(*btns)
 
