@@ -76,6 +76,9 @@ async def ready_go_next_profile(c: types.CallbackQuery):
     r_s2 = await StrategyProfiles_Money.filter(key=subject_authority_name).all()
     for item2 in r_s2:
         text = item2.description
+        logging.info("-------Text-----")
+        logging.info(text)
+        logging.info("----------------")
     await c.message.answer(f'<b>Авторитет.</b>\n'
                            f'Короткое видео\n\n'
                            f'<b>Текст про твой авторитет:</b>\n'
