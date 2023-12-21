@@ -82,6 +82,7 @@ async def ready_go_next_profile(c: types.CallbackQuery):
                            f'{text}', reply_markup=ShareOrReadyProfile.ikb_text)
 
 
+
 @dp.callback_query_handler(text='give_me_task:profile')
 async def give_me_task_profile(c: types.CallbackQuery, state: FSMContext):
     callback_logger(c, "course:give_me_task_profile")

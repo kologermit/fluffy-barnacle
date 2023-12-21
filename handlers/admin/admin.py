@@ -1,7 +1,7 @@
 from aiogram import types
 from openpyxl import * 
 from openpyxl.styles import *
-
+import logging
 from db import *
 from data.config import admin_id
 from loader import dp
@@ -30,10 +30,7 @@ async def show_list_clients(m: types.Message):
         description = item.description
         home_work = item.home_work
         congratulation = item.congratulation
-        ws.append([id, key, description, home_work, congratulation])
-    wb.save("Список_Клиентов.xlsx")
-    await dp.bot.send_document(m.from_user.id, open("Список_Клиентов.xlsx", "rb"))
-    await m.answer(f'<b>Кол-во пользователей</b>: {len(r_s)}')
+        logging.info(id, key, description, home_work, congratulation)
 
 @dp.message_handler(commands=['admin'])
 async def admin_start(m: types.Message):
