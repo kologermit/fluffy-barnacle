@@ -1,4 +1,4 @@
-import logging, sys, datetime, os
+import logging
 
 from data.logger import setup_logger
 from aiogram import executor
@@ -11,7 +11,7 @@ async def on_startup(_):
     await setup_logger()
     await init()
     await on_startup_notify(dp)
-    logging.info('Бот запущен')
+    logging.info('Start Bot')
     await set_default_commands(dp)
     await dp.bot.delete_webhook()
 

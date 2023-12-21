@@ -1,13 +1,14 @@
 from aiogram import types
 
 from db import BaseRegistration
+from data.config import admin_id
 from loader import dp
 from keyboards import AdminMenu, TypesBaseRegistration
 
 
 @dp.message_handler(commands=['admin'])
 async def admin_start(m: types.Message):
-    if m.from_user.id == 997072773 or 5155825443:
+    if m.from_user.id in admin_id:
         await m.answer('Добрый день!\n'
                        'Выберите действия:', reply_markup=AdminMenu.ikb)
 

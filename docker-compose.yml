@@ -1,6 +1,6 @@
 version: "3.9"
 services:
-  database:
+  bot:
     build: .
     environment:
       - TOKEN=${TOKEN:-5469643644:AAGswk4CVHLOTVx6ZwsVglcKcxkLQeMd030}

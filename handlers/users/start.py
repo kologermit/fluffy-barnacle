@@ -1,4 +1,4 @@
-import requests
+import requests, logging
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.utils.deep_linking import get_start_link, decode_payload
@@ -7,6 +7,7 @@ from db import *
 from loader import dp
 from keyboards import *
 from state import *
+from .logger import *
 
 
 @dp.message_handler(commands=['start'])
@@ -14,7 +15,7 @@ from state import *
 async def start(m: types.Message, state: FSMContext):
     await state.finish()
     coded = ' '.join(str(m.text).split(' ')[1:2])
-    print(coded)
+    message_logger(m, "start")
     args = m.get_args()
     reference = decode_payload(args)
     tg_id_ref_ = ''
@@ -28,47 +29,36 @@ async def start(m: types.Message, state: FSMContext):
     if len(r_s) != 0:
         await m.answer('Открывать реферальную ссылку можно только 1 раз!', reply_markup=ikb_main_menu())
         return
+    async def answer_photo():
+        await m.answer_photo(photo='https://sun9-11.userapi.com/impg/ORM9shXVuyn4TF_RBWvGCSzaZwBOLaOYX9haTQ/ksZDIASRC6U.jpg?size=1024x768&quality=95&sign=8d22b1842fc51480520e4e0e243660ae&type=album',
+                             caption=f'{m.from_user.first_name.capitalize()}, добрый день ☀️\n\n'
+                                     f'Я - Фракталик 🪬 Бот от создателей проекта @Fractal_HD ✨\n\n'
+                                     f'Я смогу показать тебе твой персональный путь к счастью, любви и богатству 🙌\n'
+                                     f'И помогу гармонизировать свою жизнь во всех её сферах:\n'
+                                     f'- Деньгах 💰\n'
+                                     f'- Отношениях 💞\n'
+                                     f'- Талантах ⭐️\n'
+                                     f'- Здоровье 🧬\n'
+                                     f'- Воспитании детей 👶\n\n'
+                                     f'Персонально. Понятно. Практично!\n\n'
+                                     f'Просто выбери сферу и введи данные о рождении 📆\n'
+                                     f'И Я дам пошаговый алгоритм действий 👣\n\n'
+                                     f'Твой Фракталик 🫶', reply_markup=ikb_im_ready())
     try:
         await ReferalProgram.filter(tg_id_ref=tg_id_ref_, sell_invited=1).delete()
         await ReferalProgram.create(tg_id_ref=tg_id_ref_,
                                     tg_un_ref=reference,
                                     sell_invited=m.from_user.id)
-        await m.answer_photo(photo='https://sun9-11.userapi.com/impg/ORM9shXVuyn4TF_RBWvGCSzaZwBOLaOYX9haTQ/ksZDIASRC6U.jpg?size=1024x768&quality=95&sign=8d22b1842fc51480520e4e0e243660ae&type=album',
-                             caption=f'{m.from_user.first_name.capitalize()}, добрый день ☀️\n\n'
-                                     f'Я - Фракталик 🪬 Бот от создателей проекта @Fractal_HD ✨\n\n'
-                                     f'Я смогу показать тебе твой персональный путь к счастью, любви и богатству 🙌\n'
-                                     f'И помогу гармонизировать свою жизнь во всех её сферах:\n'
-                                     f'- Деньгах 💰\n'
-                                     f'- Отношениях 💞\n'
-                                     f'- Талантах ⭐️\n'
-                                     f'- Здоровье 🧬\n'
-                                     f'- Воспитании детей 👶\n\n'
-                                     f'Персонально. Понятно. Практично!\n\n'
-                                     f'Просто выбери сферу и введи данные о рождении 📆\n'
-                                     f'И Я дам пошаговый алгоритм действий 👣\n\n'
-                                     f'Твой Фракталик 🫶', reply_markup=ikb_im_ready())
+        await answer_photo()
         await m.answer(f'Отлично, рад что наша семья пополняется!\n Бонусы уже отправлены вашему приглашенному!')
         await dp.bot.send_message(tg_id_ref_, 'Привет, по твоей ссылке перешел человек!')
         return
-    except Exception:
-        await m.answer_photo(photo='https://sun9-11.userapi.com/impg/ORM9shXVuyn4TF_RBWvGCSzaZwBOLaOYX9haTQ/ksZDIASRC6U.jpg?size=1024x768&quality=95&sign=8d22b1842fc51480520e4e0e243660ae&type=album',
-                             caption=f'{m.from_user.first_name.capitalize()}, добрый день ☀️\n\n'
-                                     f'Я - Фракталик 🪬 Бот от создателей проекта @Fractal_HD ✨\n\n'
-                                     f'Я смогу показать тебе твой персональный путь к счастью, любви и богатству 🙌\n'
-                                     f'И помогу гармонизировать свою жизнь во всех её сферах:\n'
-                                     f'- Деньгах 💰\n'
-                                     f'- Отношениях 💞\n'
-                                     f'- Талантах ⭐️\n'
-                                     f'- Здоровье 🧬\n'
-                                     f'- Воспитании детей 👶\n\n'
-                                     f'Персонально. Понятно. Практично!\n\n'
-                                     f'Просто выбери сферу и введи данные о рождении 📆\n'
-                                     f'И Я дам пошаговый алгоритм действий 👣\n\n'
-                                     f'Твой Фракталик 🫶', reply_markup=ikb_im_ready())
-
+    except:
+        await answer_photo()
 
 @dp.message_handler(text='Пригласить друга')
 async def add_friend(m: types.Message):
+    message_logger(m, "start:referal_friend")
     link = await get_start_link(str(m.from_user.username), encode=True)
     await m.answer(f'Предложение пригласить в марафон друга и получить 20% от его покупки.\n\n'
                    f'<b>Ваша персональная ссылка:</b>\n'
@@ -80,17 +70,20 @@ async def add_friend(m: types.Message):
 
 @dp.message_handler(text='Перейти к программе')
 async def go_to_program(m: types.Message):
+    message_logger(m, "start:tap_to_start")
     await m.answer('Нажмите ниже чтобы начать!', reply_markup=ikb_im_ready())
 
 
 @dp.message_handler(text='Я готов!')
 async def im_ready(m: types.Message, state: FSMContext):
+    message_logger(m, "start:ready")
     await m.answer('Выберите сферу жизни, которую мы будет улучшать', reply_markup=ikb_choice_sphere())
     await state.set_state(Start.sphere.state)
 
 
 @dp.message_handler(state=Start.sphere)
 async def wht_sphere(m: types.Message, state: FSMContext):
+    message_logger(m, "start:sphere")
     if m.text == 'Деньги и карьера 💰':
         await m.answer_photo(
             photo='https://sun9-13.userapi.com/impg/6pXf4tiBwDZYdd3mfPmRZjVK7Cqd3w1koO-j2Q/KsubM2CGFWY.jpg?size=1280x853&quality=95&sign=3b604ae521ed0ea0effb37f3d8b7e0f2&type=album',
@@ -118,6 +111,7 @@ async def wht_sphere(m: types.Message, state: FSMContext):
 
 @dp.message_handler(state=Start.name)
 async def name_s(m: types.Message, state: FSMContext):
+    message_logger(m, "start:name")
     await m.answer('Отлично, теперь введите его <b>дату</b> рождения в формате ДД.ММ.ГГГГ:\n'
                    '<b>Например 12.08.1990</b>')
     await state.update_data(name=m.text)
@@ -126,6 +120,7 @@ async def name_s(m: types.Message, state: FSMContext):
 
 @dp.message_handler(state=Start.born_date)
 async def date_born(m: types.Message, state: FSMContext):
+    message_logger(m, "start:born_date")
     if len(m.text) != 10:
         await m.answer('К сожалению, Я не понимаю дату 😒\n'
                        'Введи, пожалуйста, в таком виде\n'
@@ -152,19 +147,10 @@ async def date_born(m: types.Message, state: FSMContext):
 
 @dp.message_handler(state=Start.born_time)
 async def time_born(m: types.Message, state: FSMContext):
-    if len(m.text) != 5:
-        await m.answer('К сожалению, Я не понимаю время, которое Ты написал 😢\n'
-                       'Введи, пожалуйста, время в таком виде\n'
-                       '👉 Часы:Минуты ⏰\n\n'
-                       'Твой Фракталик 🫶')
-        return
-    if any(item in "йцукенгшщзхъфывапролджэячсмитьбюqwertyuiopasdfghjklzxcvbnm.,;!_*+()/#¤%&)" for item in m.text):
-        await m.answer('К сожалению, Я не понимаю время, которое Ты написал 😢\n'
-                       'Введи, пожалуйста, время в таком виде\n'
-                       '👉 Часы:Минуты ⏰\n\n'
-                       'Твой Фракталик 🫶')
-        return
-    if any(item not in ":1234567890" for item in m.text):
+    message_logger(m, "start:born_time")
+    if len(m.text) != 5 or \
+        any(item in "йцукенгшщзхъфывапролджэячсмитьбюqwertyuiopasdfghjklzxcvbnm.,;!_*+()/#¤%&)" for item in m.text) or \
+        any(item not in ":1234567890" for item in m.text):
         await m.answer('К сожалению, Я не понимаю время, которое Ты написал 😢\n'
                        'Введи, пожалуйста, время в таком виде\n'
                        '👉 Часы:Минуты ⏰\n\n'
@@ -179,6 +165,7 @@ async def time_born(m: types.Message, state: FSMContext):
 
 @dp.message_handler(state=Start.born_city)
 async def city_born(m: types.Message, state: FSMContext):
+    message_logger(m, "start:born_city")
     if any(item in ".,:;!_*+()/#¤%&)1234567890" for item in m.text):
         await m.answer('К сожалению, Я не могу понять про какой город ты говоришь 😕\n'
                        'Введи, пожалуйста, официальное название города и без спецсимволов и цифр\n'
@@ -198,6 +185,7 @@ async def city_born(m: types.Message, state: FSMContext):
 
 @dp.callback_query_handler(text='del_data', state=Start.born_city)
 async def del_data(c: types.CallbackQuery, state: FSMContext):
+    callback_logger(c, "start:del_data")
     await c.message.delete()
     await c.message.answer('Хорошо, ваши данные удалены!')
     await state.finish()
@@ -205,8 +193,9 @@ async def del_data(c: types.CallbackQuery, state: FSMContext):
 
 @dp.callback_query_handler(text='send_data', state=Start.born_city)
 async def send_data(c: types.CallbackQuery, state: FSMContext):
+    callback_logger(c, "start:send_data")
     c_d = await state.get_data()
-    print(c_d.values())
+    logging.info(c_d.values())
     r = requests.get('https://bodygraph.online/api_v1/city_list.php?dkey=test_public_key')
     soup = r.json()
     city_id = 0

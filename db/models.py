@@ -37,3 +37,11 @@ class TypePersonal_Money(Model):
     text = fields.CharField(max_length=4000)
     home_work = fields.CharField(max_length=4000)
     congratulation = fields.CharField(max_length=4000)
+
+class AuthorityInBusiness_Money(Model):
+    id = fields.IntField(pk=True)
+    key = fields.CharField(max_length=100)
+    text = fields.CharField(max_length=4000)
+    home_work = fields.CharField(max_length=4000)
+    congratulation = fields.CharField(max_length=4000)
+
