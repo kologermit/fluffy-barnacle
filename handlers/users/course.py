@@ -30,10 +30,9 @@ async def start_right_now_type_person(m: types.Message):
     text = ''
     r_s2 = await TypePersonal_Money.filter(key=subject_type_name).all()
     for item2 in r_s2:
-        text = item2.text
+        text = item2.description
     await m.answer(f'<b>Тип личности.</b>\n'
                    f'Короткое видео\n\n'
-                   f'<b>Текст про твой тип личности:</b>\n'
                    f'{text}', reply_markup=ShareOrReadyAuthority.ikb_text)
 
 
@@ -76,7 +75,7 @@ async def ready_go_next_profile(c: types.CallbackQuery):
     text = ''
     r_s2 = await TypePersonal_Money.filter(key=subject_type_name).all()
     for item2 in r_s2:
-        text = item2.text
+        text = item2.description
     await c.message.answer(f'<b>Авторитет.</b>\n'
                            f'Короткое видео\n\n'
                            f'<b>Текст про твой авторитет:</b>\n'
@@ -122,7 +121,7 @@ async def ready_go_next_profile(c: types.CallbackQuery):
     text = ''
     r_s2 = await TypePersonal_Money.filter(key=subject_type_name).all()
     for item2 in r_s2:
-        text = item2.text
+        text = item2.descripion
     await c.message.answer(f'<b>Профиль.</b>\n'
                            f'Короткое видео\n\n'
                            f'<b>Текст про твой профиль:</b>\n'
