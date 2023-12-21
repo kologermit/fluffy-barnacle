@@ -39,7 +39,7 @@ async def desc_of_type_persons_load(m: types.Message, state: FSMContext):
             text = item[1].value
             home_work = item[2].value
             congratulation = item[3].value
-            await TypePersonal_Money.create(key=key, text=text, home_work=home_work, congratulation=congratulation)
+            await TypePersonal_Money.create(key=key, description=text, home_work=home_work, congratulation=congratulation)
         await dp.bot.edit_message_text(
             "Отлично база сообщений загружена!",
             chat_id=m.chat.id,
@@ -69,7 +69,7 @@ async def desc_of_authory_in_bussiness_load(m: types.Message, state: FSMContext)
             text = item[1].value
             home_work = item[2].value
             congratulation = item[3].value
-            await AuthorityInBusiness_Money.create(key=key, text=text, home_work=home_work, congratulation=congratulation)
+            await AuthorityInBusiness_Money.create(key=key, description=text, home_work=home_work, congratulation=congratulation)
         await dp.bot.edit_message_text(
             "Отлично база сообщений загружена!",
             chat_id=m.chat.id,
