@@ -68,12 +68,12 @@ async def ready_first_authority(c: types.CallbackQuery, state: FSMContext):
 @dp.callback_query_handler(text='go_next:profile')
 async def ready_go_next_profile(c: types.CallbackQuery):
     callback_logger(c, "course:ready_go_next_profile")
-    profile_id = ''
+    subject_authority_name = ''
     r_s1 = await BaseRegistration.filter(tg_id_user=c.from_user.id).all()
     for item1 in r_s1:
-        profile_id = item1.profile_id
+        subject_authority_name = item1.subject_authority_name
     text = ''
-    r_s2 = await StrategyProfiles_Money.filter(key=profile_id).all()
+    r_s2 = await StrategyProfiles_Money.filter(key=subject_authority_name).all()
     for item2 in r_s2:
         text = item2.description
     await c.message.answer(f'<b>Авторитет.</b>\n'
