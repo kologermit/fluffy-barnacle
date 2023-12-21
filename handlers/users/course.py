@@ -3,7 +3,7 @@ from aiogram.dispatcher import FSMContext
 
 from loader import dp
 from keyboards import *
-from db import TypePersonal_Money, BaseRegistration
+from db import *
 from .logger import *
 
 rates = '<b>Наши тарифы:</b>\n\n' \
@@ -68,18 +68,18 @@ async def ready_first_authority(c: types.CallbackQuery, state: FSMContext):
 @dp.callback_query_handler(text='go_next:profile')
 async def ready_go_next_profile(c: types.CallbackQuery):
     callback_logger(c, "course:ready_go_next_profile")
-    subject_type_name = ''
+    profile_id = ''
     r_s1 = await BaseRegistration.filter(tg_id_user=c.from_user.id).all()
     for item1 in r_s1:
-        subject_type_name = item1.subject_type_name
+        profile_id = item1.profile_id
     text = ''
-    r_s2 = await TypePersonal_Money.filter(key=subject_type_name).all()
+    r_s2 = await StrategyProfiles_Money.filter(key=profile_id).all()
     for item2 in r_s2:
         text = item2.description
     await c.message.answer(f'<b>Авторитет.</b>\n'
                            f'Короткое видео\n\n'
                            f'<b>Текст про твой авторитет:</b>\n'
-                           '{text}', reply_markup=ShareOrReadyProfile.ikb_text)
+                           f'{text}', reply_markup=ShareOrReadyProfile.ikb_text)
 
 
 @dp.callback_query_handler(text='give_me_task:profile')

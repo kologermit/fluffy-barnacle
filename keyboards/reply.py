@@ -20,7 +20,7 @@ def ikb_choice_sphere():
 
 def ikb_start_new_or_old_data():
     return ReplyKeyboardMarkup(row_width=1, resize_keyboard=True, one_time_keyboard=True).add(*[
-            KeyboardButton(text='Ввести старые данные'),
+            KeyboardButton(text='Выбрать старые данные'),
             KeyboardButton(text='Ввести новые данные'),
         ])
 

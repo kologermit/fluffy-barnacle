@@ -90,7 +90,7 @@ async def desc_of_authory_in_bussiness_load(m: types.Message, state: FSMContext)
     await state.finish()
 
 @dp.message_handler(state=StrategyProfiles_Money_State.stating, content_types=types.ContentTypes.DOCUMENT)
-async def desc_of_authory_in_bussiness_load(m: types.Message, state: FSMContext):
+async def StrategyProfile(m: types.Message, state: FSMContext):
     load_message = await m.answer("Началась загрузка базы сообщений...")
     try:
         await StrategyProfiles_Money.all().delete()
@@ -100,11 +100,11 @@ async def desc_of_authory_in_bussiness_load(m: types.Message, state: FSMContext)
         sheet = wb.active
         for cells in sheet.iter_rows():
             item = [cell for cell in cells]
-            key = item[0]
-            name = item[1]
-            description = item[2]
-            home_work = item[3]
-            congratulation = item[4]
+            key = item[0].value
+            name = item[1].value
+            description = item[2].value
+            home_work = item[3].value
+            congratulation = item[4].value
             await StrategyProfiles_Money.create(key=key, description=description, home_work=home_work, congratulation=congratulation, name=name)
         await dp.bot.edit_message_text(
             "Отлично база сообщений загружена!",
