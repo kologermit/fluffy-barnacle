@@ -8,7 +8,8 @@ class AdminMenu:
 
 class LoadSheets:
     btn1 = InlineKeyboardButton(text='Описание по типам личности', callback_data='desc_of_type_persons')
-    ikb = InlineKeyboardMarkup(1).add(btn1)
+    btn2 = InlineKeyboardButton(text='Авторитеты в бизнесе', callback_data='desc_of_authory_in_bussiness')
+    ikb = InlineKeyboardMarkup(1).add(btn1, btn2)
 
 class TypesBaseRegistration:
     btn1 = InlineKeyboardButton(text='Деньги и карьера 💰', callback_data='type_reg:Деньги')
