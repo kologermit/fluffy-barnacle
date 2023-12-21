@@ -116,7 +116,7 @@ async def wht_sphere(m: types.Message, state: FSMContext):
 @dp.message_handler(state=Start.new_or_old_data)
 async def new_or_old_data(m: types.Message, state: FSMContext):
     message_logger(m, "start:new_or_old_data")
-    if m.text == 'Ввести старые данные':
+    if m.text == 'Выбрать старые данные':
         user = (await BaseRegistration.filter(tg_id_user=m.from_user.id).all())[0]
         await state.update_data(
             sphere=user.sphere,
