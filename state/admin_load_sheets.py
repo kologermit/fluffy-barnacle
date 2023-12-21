@@ -6,3 +6,6 @@ class TypePersonal_Money_State(StatesGroup):
 
 class AuthorityInBusiness_Money_State(StatesGroup):
     stating = State()
+
+class StrategyProfiles_Money_State(StatesGroup):
+    stating = State()
