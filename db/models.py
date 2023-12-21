@@ -13,6 +13,7 @@ class ReferalProgram(Model):
     sell_invited = fields.IntField()
 
 class BaseRegistration(Model):
+    id = fields.IntField(pk=True)
     tg_id_user = fields.IntField()
     tg_un_user = fields.CharField(max_length=255)
     name = fields.CharField(max_length=255)
@@ -34,14 +35,21 @@ class BaseRegistration(Model):
 class TypePersonal_Money(Model):
     id = fields.IntField(pk=True)
     key = fields.CharField(max_length=100)
-    text = fields.CharField(max_length=4000)
+    description = fields.CharField(max_length=4000)
     home_work = fields.CharField(max_length=4000)
     congratulation = fields.CharField(max_length=4000)
 
 class AuthorityInBusiness_Money(Model):
     id = fields.IntField(pk=True)
     key = fields.CharField(max_length=100)
-    text = fields.CharField(max_length=4000)
+    description = fields.CharField(max_length=4000)
     home_work = fields.CharField(max_length=4000)
     congratulation = fields.CharField(max_length=4000)
 
+class StrategyProfiles_Money(Model):
+    id = fields.IntField(pk=True)
+    key = fields.CharField(max_length=100)
+    name = fields.CharField(max_length=200)
+    description = fields.CharField(max_length=4000)
+    home_work = fields.CharField(max_length=4000)
+    congratulation = fields.CharField(max_length=4000)

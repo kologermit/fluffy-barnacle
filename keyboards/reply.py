@@ -18,6 +18,11 @@ def ikb_choice_sphere():
     kb_choice_sphere.add(btn1, btn2, btn3, btn4, btn5)
     return kb_choice_sphere
 
+def ikb_start_new_or_old_data():
+    return ReplyKeyboardMarkup(row_width=1, resize_keyboard=True, one_time_keyboard=True).add(*[
+            KeyboardButton(text='Ввести старые данные'),
+            KeyboardButton(text='Ввести новые данные'),
+        ])
 
 def ikb_start_right_now():
     kb_start_right_now = ReplyKeyboardMarkup(row_width=1, resize_keyboard=True, one_time_keyboard=True)

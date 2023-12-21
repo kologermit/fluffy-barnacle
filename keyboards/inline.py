@@ -37,6 +37,13 @@ class ShareOrReadyBuy:
     btn5 = InlineKeyboardButton(text='Идём дальше 🚀', callback_data='go_next:end_and_buy:finish')
     ikb_congratulation = InlineKeyboardMarkup(1).add(btn4, btn5)
 
+class NewOrOldData:
+    btns = [
+        InlineKeyboardButton(text='Ввести новые данные', callback_data='start:sphere:new_data'),
+        InlineKeyboardButton(text='Выбрать старые данные', callback_data='start:sphere:new_data'),
+    ]
+    ikb = InlineKeyboardMarkup(1).add(*btns)
+
 class SendOrDelData:
     btn1 = InlineKeyboardButton(text='Удалить❌', callback_data='del_data')
     btn2 = InlineKeyboardButton(text='Отправить✅', callback_data='send_data')

@@ -77,6 +77,10 @@ async def go_to_program(m: types.Message):
 @dp.message_handler(text='Я готов!')
 async def im_ready(m: types.Message, state: FSMContext):
     message_logger(m, "start:ready")
+    if len(await BaseRegistration.filter(tg_id_user=m.from_user.id).all()) != 0:
+        await m.answer("Какие данные загрузить?", reply_markup=ikb_start_new_or_old_data())
+        await state.set_state(Start.new_or_old_data.state)
+        return
     await m.answer('Выберите сферу жизни, которую мы будет улучшать', reply_markup=ikb_choice_sphere())
     await state.set_state(Start.sphere.state)
 
@@ -105,9 +109,38 @@ async def wht_sphere(m: types.Message, state: FSMContext):
             photo='https://sun9-15.userapi.com/impg/4CCv99AN3l75Mz-vnGe0Q8SN0dzonFlqXhPtFQ/cIHXhUrFYiU.jpg?size=1024x768&quality=95&sign=1280832c8adebf72ef3f76ed168a59b5&type=album',
             caption='Введите данные о человеке, который будет проходить марафон')
     await state.update_data(sphere=m.text)
+
     await m.answer('Введите <b>ИМЯ</b> человека, который будет менять свою жизнь 🚀')
     await state.set_state(Start.name.state)
 
+@dp.message_handler(state=Start.new_or_old_data)
+async def new_or_old_data(m: types.Message, state: FSMContext):
+    message_logger(m, "start:new_or_old_data")
+    if m.text == 'Ввести старые данные':
+        user = (await BaseRegistration.filter(tg_id_user=m.from_user.id).all())[0]
+        await state.update_data(
+            sphere=user.sphere,
+            name=user.name,
+            born_date=user.born_date,
+            born_time=user.born_time,
+            born_city=user.born_city[:user.born_city.rfind(" -")]
+        )
+        await state.set_state(Start.born_city)
+        c_d = await state.get_data()
+        await m.answer(f'<b>Проверьте ваши данные и затем нажмите на соответствующую кнопку!</b>\n\n'
+                   f'<b>Сфера:</b> {c_d["sphere"]}\n'
+                   f'<b>Имя человека:</b> {c_d["name"]}\n'
+                   f'<b>Дата рождения:</b> {c_d["born_date"]}\n'
+                   f'<b>Время рождения:</b> {c_d["born_time"]}\n'
+                   f'<b>Город рождения:</b> {c_d["born_city"]}',
+                   reply_markup=SendOrDelData.ikb)
+        return
+    if m.text == 'Ввести новые данные':
+        await state.update_data(is_new_data=True)
+        await m.answer('Выберите сферу жизни, которую мы будет улучшать', reply_markup=ikb_choice_sphere())
+        await state.set_state(Start.sphere.state)
+        return
+        
 
 @dp.message_handler(state=Start.name)
 async def name_s(m: types.Message, state: FSMContext):
@@ -221,11 +254,10 @@ async def send_data(c: types.CallbackQuery, state: FSMContext):
     ddate = f'{ddate_y}-{ddate_m}-{ddate_d}'
     dtime = str(c_d["born_time"])
     city_id = str(city_id)
-    print(
-        f'https://bodygraph.online/api_v1/bodygraph_fractal_min.php?dkey=test_public_key&ddate={ddate}&dtime={dtime}&dcity={city_id}')
     r = requests.get(
         f'https://bodygraph.online/api_v1/bodygraph_fractal_min.php?dkey=test_public_key&ddate={ddate}&dtime={dtime}&dcity={city_id}')
     soup = r.json()
+    logging.info(soup)
     status = soup['status']
     descr = soup['descr']
     # === data
@@ -252,6 +284,8 @@ async def send_data(c: types.CallbackQuery, state: FSMContext):
     dcity = soup['request']['dcity']
     received_at = soup['request']['received_at']
     received_from = soup['request']['received_from']
+    for user in await BaseRegistration.filter(tg_id_user=c.from_user.id):
+        await user.delete()
     await BaseRegistration.create(tg_id_user=c.from_user.id,
                                   tg_un_user=c.from_user.username,
                                   name=c_d["name"],
