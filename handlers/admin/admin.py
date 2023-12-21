@@ -1,10 +1,39 @@
 from aiogram import types
+from openpyxl import * 
+from openpyxl.styles import *
 
-from db import BaseRegistration
+from db import *
 from data.config import admin_id
 from loader import dp
 from keyboards import AdminMenu, TypesBaseRegistration
 
+@dp.message_handler(text='Показать список клиентов')
+async def show_list_clients(m: types.Message):
+    wb = Workbook()
+    ws = wb.active
+    ws.title = 'Клиенты'
+    r_s = await AuthorityInBusiness_Money.filter().all()
+    ws.append(["1", "2", "3", "4", "5"])
+    ft = Font(
+        name='Calibri',
+        size=11,
+        bold=True,
+    )
+    ws["A1"].font = ft
+    ws["B1"].font = ft
+    ws["C1"].font = ft
+    ws["D1"].font = ft
+    ws["E1"].font = ft
+    for item in r_s:
+        id = item.id
+        key = item.key
+        description = item.description
+        home_work = item.home_work
+        congratulation = item.congratulation
+        ws.append([id, key, description, home_work, congratulation])
+    wb.save("Список_Клиентов.xlsx")
+    await dp.bot.send_document(m.from_user.id, open("Список_Клиентов.xlsx", "rb"))
+    await m.answer(f'<b>Кол-во пользователей</b>: {len(r_s)}')
 
 @dp.message_handler(commands=['admin'])
 async def admin_start(m: types.Message):
@@ -16,7 +45,6 @@ async def admin_start(m: types.Message):
 @dp.callback_query_handler(text='check_recs_regs')
 async def check_recs_regs(c: types.CallbackQuery):
     await c.message.answer('Хорошо, выберите категорию', reply_markup=TypesBaseRegistration.ikb)
-
 
 @dp.callback_query_handler(text_startswith='type_reg:')
 async def choice_sphere(c: types.CallbackQuery):
