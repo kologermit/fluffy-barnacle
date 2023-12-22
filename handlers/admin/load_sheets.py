@@ -19,15 +19,6 @@ async def desc_of_type_persons(c: types.CallbackQuery, state: FSMContext):
     await c.message.answer('Отлично, отправьте нужную таблицу:')
     await state.set_state(TypePersonal_Money_State.stating.state)
 
-@dp.callback_query_handler(text='desc_of_authory_in_bussiness')
-async def desc_of_authory_in_bussiness(c: types.CallbackQuery, state: FSMContext):
-    await c.message.answer('Отлично, отправьте нужную таблицу:')
-    await state.set_state(AuthorityInBusiness_Money_State.stating.state)
-
-@dp.callback_query_handler(text='desc_of_strategy_profiles')
-async def desc_of_strategy_profiles(c: types.CallbackQuery, state: FSMContext):
-    await c.message.answer('Отлично, отправьте нужную таблицу:')
-    await state.set_state(StrategyProfiles_Money_State.stating.state)
 
 @dp.message_handler(state=TypePersonal_Money_State.stating, content_types=types.ContentTypes.DOCUMENT)
 async def desc_of_type_persons_load(m: types.Message, state: FSMContext):
@@ -59,8 +50,15 @@ async def desc_of_type_persons_load(m: types.Message, state: FSMContext):
         )
     await state.finish()
 
+
+@dp.callback_query_handler(text='desc_of_authory_in_business')
+async def desc_of_authory_in_business(c: types.CallbackQuery, state: FSMContext):
+    await c.message.answer('Отлично, отправьте нужную таблицу:')
+    await state.set_state(AuthorityInBusiness_Money_State.stating.state)
+
+
 @dp.message_handler(state=AuthorityInBusiness_Money_State.stating, content_types=types.ContentTypes.DOCUMENT)
-async def desc_of_authory_in_bussiness_load(m: types.Message, state: FSMContext):
+async def desc_of_authory_in_business_load(m: types.Message, state: FSMContext):
     load_message = await m.answer("Началась загрузка базы сообщений...")
     try:
         await AuthorityInBusiness_Money.all().delete()
@@ -89,8 +87,15 @@ async def desc_of_authory_in_bussiness_load(m: types.Message, state: FSMContext)
         )
     await state.finish()
 
+
+@dp.callback_query_handler(text='desc_of_strategy_profiles')
+async def desc_of_strategy_profiles(c: types.CallbackQuery, state: FSMContext):
+    await c.message.answer('Отлично, отправьте нужную таблицу:')
+    await state.set_state(StrategyProfiles_Money_State.stating.state)
+
+
 @dp.message_handler(state=StrategyProfiles_Money_State.stating, content_types=types.ContentTypes.DOCUMENT)
-async def StrategyProfile(m: types.Message, state: FSMContext):
+async def strategy_profile(m: types.Message, state: FSMContext):
     load_message = await m.answer("Началась загрузка базы сообщений...")
     try:
         await StrategyProfiles_Money.all().delete()
@@ -106,6 +111,11 @@ async def StrategyProfile(m: types.Message, state: FSMContext):
             home_work = item[3].value
             congratulation = item[4].value
             await StrategyProfiles_Money.create(key=key, description=description, home_work=home_work, congratulation=congratulation, name=name)
+            print(key)
+            print(name)
+            print(description)
+            print(home_work)
+            print(congratulation)
         await dp.bot.edit_message_text(
             "Отлично база сообщений загружена!",
             chat_id=m.chat.id,

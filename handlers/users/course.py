@@ -4,7 +4,6 @@ from aiogram.dispatcher import FSMContext
 from loader import dp
 from keyboards import *
 from db import *
-from .logger import *
 
 rates = '<b>Наши тарифы:</b>\n\n' \
         '<b>1. Самостоятельный тариф.</b>\n' \
@@ -22,7 +21,6 @@ rates = '<b>Наши тарифы:</b>\n\n' \
 
 @dp.message_handler(text='Начать прямо сейчас')
 async def start_right_now_type_person(m: types.Message):
-    message_logger(m, "course:start_right_now_type_person")
     subject_type_name = ''
     r_s1 = await BaseRegistration.filter(tg_id_user=m.from_user.id).all()
     for item1 in r_s1:
@@ -38,7 +36,6 @@ async def start_right_now_type_person(m: types.Message):
 
 @dp.callback_query_handler(text='give_me_task:authority')
 async def give_me_task_authority(c: types.CallbackQuery, state: FSMContext):
-    callback_logger(c, "course:give_me_task_authority")
     subject_type_name = ''
     r_s1 = await BaseRegistration.filter(tg_id_user=c.from_user.id).all()
     for item1 in r_s1:
@@ -53,7 +50,6 @@ async def give_me_task_authority(c: types.CallbackQuery, state: FSMContext):
 
 @dp.callback_query_handler(text='ready_first:authority')
 async def ready_first_authority(c: types.CallbackQuery, state: FSMContext):
-    callback_logger(c, "course:ready_first_authority")
     subject_type_name = ''
     r_s1 = await BaseRegistration.filter(tg_id_user=c.from_user.id).all()
     for item1 in r_s1:
@@ -67,103 +63,96 @@ async def ready_first_authority(c: types.CallbackQuery, state: FSMContext):
 
 @dp.callback_query_handler(text='go_next:profile')
 async def ready_go_next_profile(c: types.CallbackQuery):
-    callback_logger(c, "course:ready_go_next_profile")
     subject_authority_name = ''
     r_s1 = await BaseRegistration.filter(tg_id_user=c.from_user.id).all()
     for item1 in r_s1:
         subject_authority_name = item1.subject_authority_name
     text = ''
-    r_s2 = await StrategyProfiles_Money.filter(key=subject_authority_name).all()
+    r_s2 = await AuthorityInBusiness_Money.filter(key=subject_authority_name).all()
     for item2 in r_s2:
         text = item2.description
-        logging.info("-------Text-----")
-        logging.info(text)
-        logging.info("----------------")
     await c.message.answer(f'<b>Авторитет.</b>\n'
                            f'Короткое видео\n\n'
-                           f'<b>Текст про твой авторитет:</b>\n'
                            f'{text}', reply_markup=ShareOrReadyProfile.ikb_text)
-
 
 
 @dp.callback_query_handler(text='give_me_task:profile')
 async def give_me_task_profile(c: types.CallbackQuery, state: FSMContext):
-    callback_logger(c, "course:give_me_task_profile")
-    subject_type_name = ''
+    subject_authority_name = ''
     r_s1 = await BaseRegistration.filter(tg_id_user=c.from_user.id).all()
     for item1 in r_s1:
-        subject_type_name = item1.subject_type_name
+        subject_authority_name = item1.subject_authority_name
     hmwrk = ''
-    r_s2 = await TypePersonal_Money.filter(key=subject_type_name).all()
+    r_s2 = await AuthorityInBusiness_Money.filter(key=subject_authority_name).all()
     for item2 in r_s2:
         hmwrk = item2.home_work
-    await c.message.answer(f'<b>А вот и ваше задание (авторитет):</b>\n\n'
-                           '{hmwrk}', reply_markup=ShareOrReadyProfile.ikb_work)
+    await c.message.answer(f'<b>А вот и ваше задание:</b>\n\n'
+                           f'{hmwrk}', reply_markup=ShareOrReadyProfile.ikb_work)
 
 
 @dp.callback_query_handler(text='ready_first:profile')
 async def ready_first_profile(c: types.CallbackQuery, state: FSMContext):
-    callback_logger(c, "course:ready_first_profile")
-    subject_type_name = ''
+    subject_authority_name = ''
     r_s1 = await BaseRegistration.filter(tg_id_user=c.from_user.id).all()
     for item1 in r_s1:
-        subject_type_name = item1.subject_type_name
+        subject_authority_name = item1.subject_authority_name
     cong = ''
-    r_s2 = await TypePersonal_Money.filter(key=subject_type_name).all()
+    r_s2 = await AuthorityInBusiness_Money.filter(key=subject_authority_name).all()
     for item2 in r_s2:
         cong = item2.congratulation
-    await c.message.answer('{cong} (авторитет)', reply_markup=ShareOrReadyProfile.ikb_congratulation)
+    await c.message.answer(f'{cong}', reply_markup=ShareOrReadyProfile.ikb_congratulation)
 
 
 @dp.callback_query_handler(text='go_next:end_and_buy')
 async def ready_go_next_profile(c: types.CallbackQuery):
-    callback_logger(c, "course:ready_go_next_profile")
-    subject_type_name = ''
+    personal_line_id = ''
+    design_line_id = ''
     r_s1 = await BaseRegistration.filter(tg_id_user=c.from_user.id).all()
     for item1 in r_s1:
-        subject_type_name = item1.subject_type_name
-    text = ''
-    r_s2 = await TypePersonal_Money.filter(key=subject_type_name).all()
+        personal_line_id = item1.personal_line_id
+        design_line_id = item1.design_line_id
+    description = ''
+    r_s2 = await StrategyProfiles_Money.filter(key=f'"{personal_line_id}/{design_line_id}"').all()
     for item2 in r_s2:
-        text = item2.descripion
+        description = item2.description
     await c.message.answer(f'<b>Профиль.</b>\n'
                            f'Короткое видео\n\n'
-                           f'<b>Текст про твой профиль:</b>\n'
-                           '{text}', reply_markup=ShareOrReadyBuy.ikb_text)
+                           f'{description}', reply_markup=ShareOrReadyBuy.ikb_text)
 
 
 @dp.callback_query_handler(text='give_me_task:end_and_buy')
 async def give_me_task_profile(c: types.CallbackQuery, state: FSMContext):
-    callback_logger(c, "course:give_me_task_profile")
-    subject_type_name = ''
+    personal_line_id = ''
+    design_line_id = ''
     r_s1 = await BaseRegistration.filter(tg_id_user=c.from_user.id).all()
     for item1 in r_s1:
-        subject_type_name = item1.subject_type_name
+        personal_line_id = item1.personal_line_id
+        design_line_id = item1.design_line_id
     hmwrk = ''
-    r_s2 = await TypePersonal_Money.filter(key=subject_type_name).all()
+    r_s2 = await StrategyProfiles_Money.filter(key=f'"{personal_line_id}/{design_line_id}"').all()
     for item2 in r_s2:
         hmwrk = item2.home_work
-    await c.message.answer(f'<b>А вот и ваше задание (профиль):</b>\n\n'
-                           '{hmwrk}', reply_markup=ShareOrReadyBuy.ikb_work)
+    await c.message.answer(f'<b>А вот и ваше задание:</b>\n\n'
+                           f'{hmwrk}', reply_markup=ShareOrReadyBuy.ikb_work)
 
 
 @dp.callback_query_handler(text='ready_first:end_and_buy')
 async def ready_first_profile(c: types.CallbackQuery, state: FSMContext):
-    callback_logger(c, "course:ready_first_profile")
-    subject_type_name = ''
+    personal_line_id = ''
+    design_line_id = ''
     r_s1 = await BaseRegistration.filter(tg_id_user=c.from_user.id).all()
     for item1 in r_s1:
-        subject_type_name = item1.subject_type_name
+        personal_line_id = item1.personal_line_id
+        design_line_id = item1.design_line_id
     cong = ''
-    r_s2 = await TypePersonal_Money.filter(key=subject_type_name).all()
+    r_s2 = await StrategyProfiles_Money.filter(key=f'"{personal_line_id}/{design_line_id}"').all()
     for item2 in r_s2:
         cong = item2.congratulation
-    await c.message.answer('{cong} (профиль)', reply_markup=ShareOrReadyBuy.ikb_congratulation)
+    await c.message.answer(f'{cong}', reply_markup=ShareOrReadyBuy.ikb_congratulation)
 
 
 @dp.callback_query_handler(text='go_next:end_and_buy:finish')
 async def end_and_buy(c: types.CallbackQuery, state: FSMContext):
-    callback_logger(c, "course:end_and_buy")
     await c.message.answer(f'Надеюсь, Ты выполнил(а) все задания и уже видишь, как твой <b>денежный потенциал раскрывается</b> 💰\n'
                            f'Но это лишь <b>начало пути</b>. Впереди большая работа, чтобы уверенно встать на свой '
                            f'<b>уникальный путь</b> к деньгам и богатству.\n'
@@ -173,7 +162,6 @@ async def end_and_buy(c: types.CallbackQuery, state: FSMContext):
 
 @dp.message_handler(text='Готов(а)')
 async def iam_ready_pre_choice_rate(m: types.Message):
-    message_logger(m, "course:iam_ready_pre_choice_rate")
     await m.answer(f'Это верное решение!\n'
                    f'Через год <b>Ты скажешь себе "спасибо"</b>, что принял(а) его сейчас. И нам 🥰\n\n'
                    f'На следующем этапе Ты получишь ещё 6 шагов и заданий, которые дадут тебе <b>глубокое понимание</b> '
@@ -188,7 +176,6 @@ async def iam_ready_pre_choice_rate(m: types.Message):
 
 @dp.message_handler(text='Познакомиться с наставником 🤑')
 async def met_head(m: types.Message):
-    message_logger(m, "course:met_head")
     await m.answer("Познакомиться с наставником: моё фото или лучше видео.\n"
                    "Твоим наставником будет <b><u>Кирилл Чеузов</u></b> - создатель проекта \"FractalHD.House\" и \"6 систем "
                    "самопознания\". Предприниматель-миллионер, опытный коуч и проводник в  мир духовных практик 🙏\n\n"
@@ -200,7 +187,6 @@ async def met_head(m: types.Message):
 @dp.message_handler(text='Работа с наставником 14990 рублей')
 @dp.message_handler(text='Работа с наставником')
 async def choice_rate(m: types.Message):
-    message_logger(m, "course:choice_rate")
     if 'Групповой тариф' in m.text:
         await m.answer('Нажми на <b>/pay</b> для оплаты (Групповой тариф)')
     if 'Работа с наставником' in m.text:
@@ -209,12 +195,10 @@ async def choice_rate(m: types.Message):
 
 @dp.message_handler(commands=['pay'])
 async def payment(m: types.Message):
-    message_logger(m, "course:pay")
     await m.answer('Благодарность за покупку и доверие.\n'
                    'Текст + видео.', reply_markup=ikb_start_marathon())
 
 
 @dp.message_handler(text='Начать свой путь к богатству')
 async def payment(m: types.Message):
-    message_logger(m, "course:payment")
     await m.answer('Тут будет начало марафона')

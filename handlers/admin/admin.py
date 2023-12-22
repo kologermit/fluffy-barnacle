@@ -30,11 +30,11 @@ async def show_list_clients(m: types.Message):
         description = item.description
         home_work = item.home_work
         congratulation = item.congratulation
-        logging.info(id)
-        logging.info(key)
-        logging.info(description)
-        logging.info(home_work)
-        logging.info(congratulation)
+        print(id)
+        print(key)
+        print(description)
+        print(home_work)
+        print(congratulation)
 
 @dp.message_handler(commands=['admin'])
 async def admin_start(m: types.Message):
