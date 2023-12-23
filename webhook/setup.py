@@ -5,7 +5,7 @@ from loader import dp
 async def handle(request: aiohttp.web_request.Request):
     try:
         print("Output")
-        post = await request.post()
+        post = await request.headers()
         for key, value in post.items():
             print("Key", key, "Value", value)
         order_id = post.get("order_id", "-1")
