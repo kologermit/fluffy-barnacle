@@ -19,8 +19,9 @@ async def handle(request: aiohttp.web_request.Request):
             print("Signature is incorrect")
         print("Headers", dict(headers))
         print("Post", dict(post))
-        if post.get("_param_user_tg_id") is None:
-            return  web.Response(text='User id not found')
+        print("UI", post.get("_param_user_tg_id", None))
+        if post.get("_param_user_tg_id", None) is None:
+            return web.Response(text='User id not found')
         user_id = post.get("_param_user_tg_id")
         # if not user_id:
         #     return web.Response(text='User id napam not found')
