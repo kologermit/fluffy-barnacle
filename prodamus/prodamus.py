@@ -3,7 +3,7 @@ from data.config import prodamus as prodamusConf
 
 def prodamus_create_url(product: dict, user_id: int):
     data = {
-        "do": "pay",
+        "do": "link",
         "order_id": user_id,
         "demo_mode": prodamusConf["demo_mode"],
         # "callbackType": "json",
