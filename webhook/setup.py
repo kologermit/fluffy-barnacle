@@ -6,7 +6,7 @@ async def handle(request: aiohttp.web_request.Request):
     try:
         headers = request.headers
         user_id = headers.get("_param_user_tg_id")
-        print(user_id)
+        print(dict(headers))
         if not user_id:
             return web.Response(text='User id napam not found')
         try:
