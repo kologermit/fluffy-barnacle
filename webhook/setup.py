@@ -1,15 +1,20 @@
 from aiohttp import web
 import logging, aiohttp
+from loader import dp
 
 async def handle(request: aiohttp.web_request.Request):
     try:
         post = await request.post()
         order_id = post.get("order_id", "-1")
         order_num = post.get("order_num", "-1")
-        for key, value in post.items():
-            logging.info(key)
-            logging.info(value)
-            logging.info()
+        user_id = post.get("_param_user_tg_id")
+        if not user_id:
+            return web.Response(text='User id napam not found')
+        try:
+            dp.bot.send_message(user_id, "Оплата принята")
+        except Exception as err:
+            logging.exception(err)
+            return web.Response(text='Failed to send message')
         return web.Response(text='Success webhook')
     except Exception as err:
         logging.exception(err)

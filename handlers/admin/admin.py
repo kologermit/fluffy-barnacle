@@ -45,7 +45,7 @@ async def admin_start(m: types.Message):
 
 @dp.message_handler(commands=['test'])
 async def test(m: types.Message):
-    logging.info(prodamus_create_url({
+    await m.answer(prodamus_create_url({
         "name": "Имя товара",
         "price": 100,
         "quantity": 1,
