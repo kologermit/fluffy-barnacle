@@ -6,6 +6,6 @@ async def set_default_commands(dp):
         [
             types.BotCommand('start', 'Запуск/Перезапуск бота'),
             types.BotCommand('admin', 'Открыть панель администратора'),
-            types.BotCommфnd('test', 'Отправить тестовую ссылку на оплату'),
+            types.BotCommand('test', 'Отправить тестовую ссылку на оплату'),
         ]
     )
