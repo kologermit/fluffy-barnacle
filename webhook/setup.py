@@ -23,13 +23,11 @@ async def handle(request: aiohttp.web_request.Request):
         if post.get("_param_user_tg_id", None) is None:
             return web.Response(text='User id not found')
         user_id = post.get("_param_user_tg_id")
-        # if not user_id:
-        #     return web.Response(text='User id napam not found')
-        # try:
-        #     await dp.bot.send_message(user_id, "Оплата принята")
-        # except Exception as err:
-        #     logging.exception(err)
-        #     return web.Response(text='Failed to send message')
+        try:
+            await dp.bot.send_message(user_id, "Оплата принята")
+        except Exception as err:
+            logging.exception(err)
+            return web.Response(text='Failed to send message')
         return web.Response(text="success webhook")
     except Exception as err:
         logging.exception(err)
