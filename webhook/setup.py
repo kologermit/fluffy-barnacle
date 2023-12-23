@@ -17,11 +17,11 @@ async def handle(request: aiohttp.web_request.Request):
             print("Signature is awesome")
         else:
             print("Signature is incorrect")
-        print("Headers", headers)
-        print("Post", post)
-        # if post.get("_param") is None:
-        #     return  web.Response(text='Sign param not found')
-
+        print("Headers", dict(headers))
+        print("Post", dict(post))
+        if post.get("_param_user_tg_id") is None:
+            return  web.Response(text='User id not found')
+        user_id = post.get("_param_user_tg_id")
         # if not user_id:
         #     return web.Response(text='User id napam not found')
         # try:
