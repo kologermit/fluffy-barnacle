@@ -12,7 +12,7 @@ def prodamus_create_url(product: dict, user_id: int):
         "currency": "rub",
         "payments_limit": 1,
         "_param_user_tg_id": user_id,
-        "callbackType": "json",
+        # "callbackType": "json",
         "payments_limit": "1",
     }
     for key, value in product.items():
