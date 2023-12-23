@@ -11,7 +11,7 @@ async def handle(request: aiohttp.web_request.Request):
         if not user_id:
             return web.Response(text='User id napam not found')
         try:
-            dp.bot.send_message(user_id, "Оплата принята")
+            await dp.bot.send_message(user_id, "Оплата принята")
         except Exception as err:
             logging.exception(err)
             return web.Response(text='Failed to send message')
