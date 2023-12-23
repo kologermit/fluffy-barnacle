@@ -3,10 +3,10 @@ from data.config import prodamus as prodamusConf
 
 def prodamus_create_url(product: dict, user_id: int):
     data = {
-        "do": "link",
+        "do": "pay",
         "order_id": user_id,
         "demo_mode": prodamusConf["demo_mode"],
-        "callbackType": "json",
+        # "callbackType": "json",
         "customer_email": "kologermit@gmail.com",
         "customer_extra": "extra",
         "currency": "rub",
