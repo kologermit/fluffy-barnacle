@@ -2,16 +2,18 @@ from aiohttp import web
 import logging, aiohttp
 
 async def handle(request: aiohttp.web_request.Request):
-    post = await request.post()
-    for key, value in post.items():
-        logging.info("-------------------")
-        logging.info("key") 
-        logging.info(key)
-        logging.info("value") 
-        logging.info(value)
-        logging.info("-------------------")
-    
-    return web.Response(text='Hello world')
+    try:
+        post = await request.post()
+        order_id = post.get("order_id", "-1")
+        order_num = post.get("order_num", "-1")
+        for key, value in post.items():
+            logging.info(key)
+            logging.info(value)
+            logging.info()
+        return web.Response(text='Success webhook')
+    except Exception as err:
+        logging.exception(err)
+        return web.Response(text="Server Error")
 
 async def setup_webhook():
     app = web.Application()

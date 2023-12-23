@@ -8,7 +8,8 @@ def prodamus_create_url(product: dict, user_id: int):
         "demo_mode": prodamusConf["demo_mode"],
         "callbackType": "json",
         "currency": "rub",
-        "payments_limit": 1
+        "payments_limit": 1,
+        "_param_user_id": user_id
     }
     for key, value in product.items():
         data[f"products[0][{key}]"] = value
