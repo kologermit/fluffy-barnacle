@@ -20,7 +20,10 @@ async def handle(request: aiohttp.web_request.Request):
             return web.Response(text='User id not found')
         user_id = post.get("_param_user_tg_id")
         try:
-            await dp.bot.send_message(user_id, "Оплата принята")
+            await dp.bot.send_message(user_id, 
+f"""Оплата принята
+Товар: {post['product[0][name]']}
+Сумма: {post['sum']}""")
         except Exception as err:
             logging.exception(err)
             return web.Response(text='Failed to send message')
