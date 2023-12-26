@@ -43,15 +43,6 @@ async def admin_start(m: types.Message):
         await m.answer('Добрый день!\n'
                        'Выберите действия:', reply_markup=AdminMenu.ikb)
 
-@dp.message_handler(commands=['test'])
-async def test(m: types.Message):
-    await m.answer(prodamus_create_url({
-        "name": "Имя товара",
-        "price": 100,
-        "quantity": 1,
-        "sku": m.from_user.id
-    }, m.from_user.id))
-
 @dp.callback_query_handler(text='check_recs_regs')
 async def check_recs_regs(c: types.CallbackQuery):
     await c.message.answer('Хорошо, выберите категорию', reply_markup=TypesBaseRegistration.ikb)

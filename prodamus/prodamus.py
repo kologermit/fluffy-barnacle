@@ -1,18 +1,15 @@
 import requests
 from data.config import prodamus as prodamusConf
 
-def prodamus_create_url(product: dict, user_id: int):
+def prodamus_create_url(product: dict, extra: str, user_id: int):
     data = {
         "do": "link",
         "order_id": user_id,
-        "demo_mode": prodamusConf["demo_mode"],
-        # "callbackType": "json",
-        "customer_email": "kologermit@gmail.com",
-        "customer_extra": "extra",
+        "demo_mode": 0,
+        "customer_extra": extra,
         "currency": "rub",
         "payments_limit": 1,
         "_param_user_tg_id": user_id,
-        # "callbackType": "json",
         "payments_limit": "1",
     }
     for key, value in product.items():

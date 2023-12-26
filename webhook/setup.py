@@ -12,14 +12,10 @@ async def handle(request: aiohttp.web_request.Request):
         checkSign = prodamus.sign(bodyDict)
         if not checkSign:
             return web.Response(text="Uncheck")
+        print("Post:", post)
         signIsGood = prodamus.verify(bodyDict, checkSign)
-        if signIsGood:
-            print("Signature is awesome")
-        else:
+        if not signIsGood:
             print("Signature is incorrect")
-        print("Headers", dict(headers))
-        print("Post", dict(post))
-        print("UI", post.get("_param_user_tg_id", None))
         if post.get("_param_user_tg_id", None) is None:
             return web.Response(text='User id not found')
         user_id = post.get("_param_user_tg_id")

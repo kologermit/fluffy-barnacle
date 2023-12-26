@@ -1,9 +1,11 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from loader import dp
 from keyboards import *
 from db import *
+from prodamus.prodamus import prodamus_create_url
 
 rates = '<b>Наши тарифы:</b>\n\n' \
         '<b>1. Самостоятельный тариф.</b>\n' \
@@ -184,20 +186,32 @@ async def met_head(m: types.Message):
 
 @dp.message_handler(text='Групповой тариф за 4990 рублей')
 @dp.message_handler(text='Групповой тариф')
+async def group1(m: types.Message):
+    await m.answer("Групповой тариф за 4990 рублей", 
+        reply_markup=InlineKeyboardMarkup(1).add(
+        InlineKeyboardButton(text="Оплата", url=
+        prodamus_create_url({
+                "name": "Групповой тариф",
+                "price": "4990",
+                "quantity": 1,
+                "sku": "4990"
+            }, "4990", m.from_user.id
+        ))))
+
 @dp.message_handler(text='Работа с наставником 14990 рублей')
 @dp.message_handler(text='Работа с наставником')
 async def choice_rate(m: types.Message):
-    if 'Групповой тариф' in m.text:
-        await m.answer('Нажми на <b>/pay</b> для оплаты (Групповой тариф)')
-    if 'Работа с наставником' in m.text:
-        await m.answer('Нажми на <b>/pay</b> для оплаты (Работа с наставником)')
-
-
-@dp.message_handler(commands=['pay'])
-async def payment(m: types.Message):
-    await m.answer('Благодарность за покупку и доверие.\n'
-                   'Текст + видео.', reply_markup=ikb_start_marathon())
-
+    await m.answer("Работа с наставником 14990 рублей", 
+        reply_markup=InlineKeyboardMarkup(1).add(
+        InlineKeyboardButton(text="Оплата", url=
+        prodamus_create_url({
+                "name": "Работа с наставником",
+                "price": "14990",
+                "quantity": 1,
+                "sku": "14990"
+            }, "14990", m.from_user.id
+        ))))
+    
 
 @dp.message_handler(text='Начать свой путь к богатству')
 async def payment(m: types.Message):
