@@ -22,7 +22,7 @@ async def handle(request: aiohttp.web_request.Request):
         try:
             await dp.bot.send_message(user_id, 
 f"""Оплата принята
-Товар: {post['product[0][name]']}
+Товар: {post['products[0][name]']}
 Сумма: {post['sum']}""")
         except Exception as err:
             logging.exception(err)
