@@ -196,7 +196,8 @@ async def group1(m: types.Message):
                 "quantity": 1,
                 "sku": "4990"
             }, "4990", m.from_user.id
-        ))))
+        ),
+        callback_data="maraphone")))
 
 @dp.message_handler(text='Работа с наставником 14990 рублей')
 @dp.message_handler(text='Работа с наставником')
@@ -210,9 +211,12 @@ async def choice_rate(m: types.Message):
                 "quantity": 1,
                 "sku": "14990"
             }, "14990", m.from_user.id
-        ))))
-    
+        ), callback_data="maraphone")))
+
+@dp.callback_query_handler(text='maraphone')
+async def maraphone(c: types.CallbackQuery, state: FSMContext):
+    await c.message.answer('Тут будет начало марафона')
 
 @dp.message_handler(text='Начать свой путь к богатству')
-async def payment(m: types.Message):
+async def maraphone(m: types.Message):
     await m.answer('Тут будет начало марафона')
