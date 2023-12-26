@@ -102,7 +102,7 @@ async def ready_first_profile(c: types.CallbackQuery, state: FSMContext):
     r_s2 = await AuthorityInBusiness_Money.filter(key=subject_authority_name).all()
     for item2 in r_s2:
         cong = item2.congratulation
-    await c.message.answer(f'{cong}', reply_markup=ShareOrReadyProfile.ikb_congratulation)
+    await c.message.answer(f'.{cong}', reply_markup=ShareOrReadyProfile.ikb_congratulation)
 
 
 @dp.callback_query_handler(text='go_next:end_and_buy')
