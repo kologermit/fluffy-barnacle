@@ -1,4 +1,4 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import *
 
 
 def ikb_im_ready():
@@ -46,12 +46,16 @@ def ikb_pre_choice_rate():
     kb_choice_rate.add(btn1, btn2)
     return kb_choice_rate
 
+def ikb_products(products: list):
+    kb_choice_rate = InlineKeyboardMarkup(1)
+    btns = [InlineKeyboardButton(text=p.name, callback_data=f"product{p.id}") for p in products]
+    kb_choice_rate.add(*btns)
+    return kb_choice_rate
+
 def ikb_choice_rate():
     kb_choice_rate = ReplyKeyboardMarkup(row_width=1, resize_keyboard=True, one_time_keyboard=True)
-    btn2 = KeyboardButton(text="Групповой тариф за 4990 рублей")
-    btn3 = KeyboardButton(text="Работа с наставником 14990 рублей")
     btn4 = KeyboardButton(text="Познакомиться с наставником 🤑")
-    kb_choice_rate.add(btn2, btn3, btn4)
+    kb_choice_rate.add(btn4)
     return kb_choice_rate
 
 def ikb_choice_rate_after_met_head():

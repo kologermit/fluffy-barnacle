@@ -174,6 +174,7 @@ async def iam_ready_pre_choice_rate(m: types.Message):
                    f'🔝 <b><u>Персональный с наставником</u></b>, с которым Ты сможешь <b>лично обсудить</b> свою ситуацию '
                    f'и задать вопросы о своём "денежном дизайне". Общение в группе так же входит в тариф 👍',
                    reply_markup=ikb_choice_rate())
+    await m.answer(text='Курсы', reply_markup=ikb_products(await Products.filter().all()))
 
 
 @dp.message_handler(text='Познакомиться с наставником 🤑')
@@ -184,34 +185,25 @@ async def met_head(m: types.Message):
                    "В работу с Кириллом входит <b><u>2 часовых созвона и личный чат</u></b> для вопросов.", reply_markup=ikb_choice_rate_after_met_head())
 
 
-@dp.message_handler(text='Групповой тариф за 4990 рублей')
-@dp.message_handler(text='Групповой тариф')
-async def group1(m: types.Message):
-    await m.answer("Групповой тариф за 4990 рублей", 
+@dp.callback_query_handler(regexp="product[0-9]+")
+async def group1(c: types.CallbackQuery, state: FSMContext):
+    product = await Products.filter(id=int(c.data.replace("product", ""))).all()
+    if len(product) == 0:
+        await c.message.answer("Такой товар не найден")
+        return
+    p = product[0]
+    await c.message.answer(p.name, 
         reply_markup=InlineKeyboardMarkup(1).add(
         InlineKeyboardButton(text="Оплата", url=
         prodamus_create_url({
-                "name": "Групповой тариф",
-                "price": "4990",
+                "id": p.id,
+                "name": p.name,
+                "price": p.price,
                 "quantity": 1,
-                "sku": "4990"
-            }, "4990", m.from_user.id
+                "sku": p.price
+            }, p.description, c.from_user.id
         ),
         callback_data="maraphone")))
-
-@dp.message_handler(text='Работа с наставником 14990 рублей')
-@dp.message_handler(text='Работа с наставником')
-async def choice_rate(m: types.Message):
-    await m.answer("Работа с наставником 14990 рублей", 
-        reply_markup=InlineKeyboardMarkup(1).add(
-        InlineKeyboardButton(text="Оплата", url=
-        prodamus_create_url({
-                "name": "Работа с наставником",
-                "price": "14990",
-                "quantity": 1,
-                "sku": "14990"
-            }, "14990", m.from_user.id
-        ), callback_data="maraphone")))
 
 @dp.callback_query_handler(text='maraphone')
 async def maraphone(c: types.CallbackQuery, state: FSMContext):

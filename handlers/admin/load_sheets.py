@@ -24,11 +24,10 @@ async def desc_of_type_persons_load(m: types.Message, state: FSMContext):
         wb = load_workbook("menu.xlsx")
         sheet = wb.active
         for cells in sheet.iter_rows():
-            item = [cell for cell in cells]
-            key = item[0].value
-            text = item[1].value
-            home_work = item[2].value
-            congratulation = item[3].value
+            items = [("-" if cell.value is None else cell.value) for cell in cells]
+            while len(items) < 4:
+                items.append("-")
+            key, text, home_work, congratulation = items
             await TypePersonal_Money.create(key=key, description=text, home_work=home_work, congratulation=congratulation)
         await dp.bot.edit_message_text(
             "Отлично база сообщений загружена!",
@@ -61,11 +60,10 @@ async def desc_of_authory_in_business_load(m: types.Message, state: FSMContext):
         wb = load_workbook("menu.xlsx")
         sheet = wb.active
         for cells in sheet.iter_rows():
-            item = [cell for cell in cells]
-            key = item[0].value
-            text = item[1].value
-            home_work = item[2].value
-            congratulation = item[3].value
+            items = [("-" if cell.value is None else cell.value) for cell in cells]
+            while len(items) < 4:
+                items.append("-")
+            key, text, home_work, congratulation = items
             await AuthorityInBusiness_Money.create(key=key, description=text, home_work=home_work, congratulation=congratulation)
         await dp.bot.edit_message_text(
             "Отлично база сообщений загружена!",
@@ -103,12 +101,10 @@ async def strategy_profile(m: types.Message, state: FSMContext):
         wb = load_workbook("menu.xlsx")
         sheet = wb.active
         for cells in sheet.iter_rows():
-            item = [cell for cell in cells]
-            key = item[0].value
-            name = item[1].value
-            description = item[2].value
-            home_work = item[3].value
-            congratulation = item[4].value
+            items = [("-" if cell.value is None else cell.value) for cell in cells]
+            while len(items) < 5:
+                items.append("-")
+            key, name, description, home_work, congratulation = items
             await StrategyProfiles_Money.create(key=key, description=description, home_work=home_work, congratulation=congratulation, name=name)
             print(key)
             print(name)
@@ -145,8 +141,10 @@ async def strategy_profile(m: types.Message, state: FSMContext):
         wb = load_workbook("menu.xlsx")
         sheet = wb.active
         for cells in sheet.iter_rows():
-            items = [cell for cell in cells]
-            name, price, description = (item.value for item in items)
+            items = [("-" if cell.value is None else cell.value) for cell in cells]
+            if len(items) < 3:
+                items.append("-")
+            name, price, description = items
             await Products.create(name=name, price=price, description=description)
             print(name)
             print(price)

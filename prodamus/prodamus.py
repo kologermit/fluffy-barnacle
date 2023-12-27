@@ -4,7 +4,7 @@ from data.config import prodamus as prodamusConf
 def prodamus_create_url(product: dict, extra: str, user_id: int):
     data = {
         "do": "link",
-        "order_id": user_id,
+        "order_id": product["id"],
         "demo_mode": 0,
         "customer_extra": extra,
         "currency": "rub",
