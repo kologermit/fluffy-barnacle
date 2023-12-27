@@ -201,7 +201,7 @@ async def group1(c: types.CallbackQuery, state: FSMContext):
                 "price": p.price,
                 "quantity": 1,
                 "sku": p.price
-            }, p.description, c.from_user.id
+            }, p.description, c.from_user
         ),
         callback_data="maraphone")))
 

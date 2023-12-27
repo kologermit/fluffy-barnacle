@@ -2,6 +2,7 @@ from aiohttp import web
 import logging, aiohttp, prodamuspy
 from loader import dp
 from data.config import prodamus as conf
+from data.config import admin_id as admins
 
 async def handle(request: aiohttp.web_request.Request):
     try:
@@ -24,6 +25,19 @@ async def handle(request: aiohttp.web_request.Request):
 f"""Оплата принята
 Товар: {post['products[0][name]']}
 Сумма: {post['sum']}""")
+            for admin in admins:
+                await dp.bot.send_message(admin, f"""Сообщение для админа: Пользователь оплатил товар
+ТоварId: {post['_param_product_id']}
+Цена: {post['sum']}
+Имя: {post['products[0][name]']}
+Статус оплаты: {post['payment_status']}
+
+Пользователь: {post['_param_user_name']}
+Ссылка: @{post['_param_user_username']}
+ТГ номер: {user_id}
+Почта: {post['customer_email']}
+Телефон: {post['customer_phone']}
+""")
         except Exception as err:
             logging.exception(err)
             return web.Response(text='Failed to send message')
