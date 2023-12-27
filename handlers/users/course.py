@@ -48,6 +48,7 @@ async def give_me_task_authority(c: types.CallbackQuery, state: FSMContext):
         hmwrk = item2.home_work
     await c.message.answer(f'<b>А вот и ваше задание:</b>\n\n'
                            f'{hmwrk}', reply_markup=ShareOrReadyAuthority.ikb_work)
+    await c.clean()
 
 
 @dp.callback_query_handler(text='ready_first:authority')
@@ -61,6 +62,7 @@ async def ready_first_authority(c: types.CallbackQuery, state: FSMContext):
     for item2 in r_s2:
         cong = item2.congratulation
     await c.message.answer(cong, reply_markup=ShareOrReadyAuthority.ikb_congratulation)
+    await c.clean()
 
 
 @dp.callback_query_handler(text='go_next:profile')
@@ -76,6 +78,7 @@ async def ready_go_next_profile(c: types.CallbackQuery):
     await c.message.answer(f'<b>Авторитет.</b>\n'
                            f'Короткое видео\n\n'
                            f'{text}', reply_markup=ShareOrReadyProfile.ikb_text)
+    await c.clean()
 
 
 @dp.callback_query_handler(text='give_me_task:profile')
@@ -90,6 +93,7 @@ async def give_me_task_profile(c: types.CallbackQuery, state: FSMContext):
         hmwrk = item2.home_work
     await c.message.answer(f'<b>А вот и ваше задание:</b>\n\n'
                            f'{hmwrk}', reply_markup=ShareOrReadyProfile.ikb_work)
+    await c.clean()
 
 
 @dp.callback_query_handler(text='ready_first:profile')
@@ -103,6 +107,7 @@ async def ready_first_profile(c: types.CallbackQuery, state: FSMContext):
     for item2 in r_s2:
         cong = item2.congratulation
     await c.message.answer(f'.{cong}', reply_markup=ShareOrReadyProfile.ikb_congratulation)
+    await c.clean()
 
 
 @dp.callback_query_handler(text='go_next:end_and_buy')
@@ -120,6 +125,7 @@ async def ready_go_next_profile(c: types.CallbackQuery):
     await c.message.answer(f'<b>Профиль.</b>\n'
                            f'Короткое видео\n\n'
                            f'{description}', reply_markup=ShareOrReadyBuy.ikb_text)
+    await c.clean()
 
 
 @dp.callback_query_handler(text='give_me_task:end_and_buy')
@@ -136,6 +142,7 @@ async def give_me_task_profile(c: types.CallbackQuery, state: FSMContext):
         hmwrk = item2.home_work
     await c.message.answer(f'<b>А вот и ваше задание:</b>\n\n'
                            f'{hmwrk}', reply_markup=ShareOrReadyBuy.ikb_work)
+    await c.clean()
 
 
 @dp.callback_query_handler(text='ready_first:end_and_buy')
@@ -151,6 +158,7 @@ async def ready_first_profile(c: types.CallbackQuery, state: FSMContext):
     for item2 in r_s2:
         cong = item2.congratulation
     await c.message.answer(f'.{cong}', reply_markup=ShareOrReadyBuy.ikb_congratulation)
+    await c.clean()
 
 
 @dp.callback_query_handler(text='go_next:end_and_buy:finish')
@@ -160,6 +168,7 @@ async def end_and_buy(c: types.CallbackQuery, state: FSMContext):
                            f'<b>уникальный путь</b> к деньгам и богатству.\n'
                            f'Ты уже знаешь, что общие шаблоны не работают и тебе нужно <b>знать свои особенности.</b>\n\n'
                            f'Ты готов(а) продолжить работу?', reply_markup=ikb_pre_choice_rate())
+    await c.clean()
 
 
 @dp.message_handler(text='Готов(а)')
@@ -204,11 +213,14 @@ async def group1(c: types.CallbackQuery, state: FSMContext):
             }, p.description, c.from_user
         ),
         callback_data="maraphone")))
+    await c.clean()
 
 @dp.callback_query_handler(text='maraphone')
 async def maraphone(c: types.CallbackQuery, state: FSMContext):
     await c.message.answer('Тут будет начало марафона')
+    await c.clean()
 
 @dp.message_handler(text='Начать свой путь к богатству')
 async def maraphone(m: types.Message):
     await m.answer('Тут будет начало марафона')
+    await c.clean()

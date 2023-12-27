@@ -12,6 +12,7 @@ from state import *
 @dp.callback_query_handler(text='load_sheets')
 async def load_sheets(c: types.CallbackQuery):
     await c.message.answer('Хорошо, выберите таблицу:', reply_markup=LoadSheets.ikb)
+    await c.clean()
 
 
 @dp.message_handler(state=TypePersonal_Money_State.stating, content_types=types.ContentTypes.DOCUMENT)
@@ -48,6 +49,7 @@ async def desc_of_type_persons_load(m: types.Message, state: FSMContext):
 async def desc_of_authory_in_business(c: types.CallbackQuery, state: FSMContext):
     await c.message.answer('Отлично, отправьте нужную таблицу:')
     await state.set_state(AuthorityInBusiness_Money_State.stating.state)
+    await c.clean()
 
 
 @dp.message_handler(state=AuthorityInBusiness_Money_State.stating, content_types=types.ContentTypes.DOCUMENT)
@@ -84,12 +86,13 @@ async def desc_of_authory_in_business_load(m: types.Message, state: FSMContext):
 async def desc_of_strategy_profiles(c: types.CallbackQuery, state: FSMContext):
     await c.message.answer('Отлично, отправьте нужную таблицу:')
     await state.set_state(StrategyProfiles_Money_State.stating.state)
+    await c.clean()
 
 @dp.callback_query_handler(text='desc_of_products')
 async def desc_of_products(c: types.CallbackQuery, state: FSMContext):
     await c.message.answer('Отлично, отправьте нужную таблицу:')
     await state.set_state(Products_State.stating.state)
-
+    await c.clean()
 
 @dp.message_handler(state=StrategyProfiles_Money_State.stating, content_types=types.ContentTypes.DOCUMENT)
 async def strategy_profile(m: types.Message, state: FSMContext):
@@ -130,6 +133,7 @@ async def strategy_profile(m: types.Message, state: FSMContext):
 async def desc_of_type_persons(c: types.CallbackQuery, state: FSMContext):
     await c.message.answer('Отлично, отправьте нужную таблицу:')
     await state.set_state(TypePersonal_Money_State.stating.state)
+    await c.clean()
 
 @dp.message_handler(state=Products_State.stating, content_types=types.ContentTypes.DOCUMENT)
 async def strategy_profile(m: types.Message, state: FSMContext):
