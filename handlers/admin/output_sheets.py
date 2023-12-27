@@ -12,7 +12,7 @@ from state import *
 @dp.callback_query_handler(text='output_sheets')
 async def output_sheets(c: types.CallbackQuery):
     await c.message.answer('Хорошо, выберите таблицу:', reply_markup=OutputSheets.ikb)
-    await c.clean()
+    await c.answer()
 
 @dp.callback_query_handler(text='output_type_persons')
 async def output_type_persons(c: types.CallbackQuery):
@@ -24,7 +24,7 @@ Key: {t.key}
 Description: {t.description}
 Home Work: {t.home_work}
 Congratulations: {t.congratulation}""")
-    await c.clean()
+    await c.answer()
         
 @dp.callback_query_handler(text='output_authory_in_business')
 async def output_authory_in_business(c: types.CallbackQuery):
@@ -36,7 +36,7 @@ Key: {a.key}
 Description: {a.descriprion}
 Home Work: {a.home_work}
 Congratulations: {a.congratulation}""")
-    await c.clean()
+    await c.answer()
         
 @dp.callback_query_handler(text='output_strategy_profiles')
 async def output_strategy_profiles(c: types.CallbackQuery):
@@ -49,7 +49,7 @@ Name: {p.name}
 Description: {p.description}
 Home Work: {p.home_work}
 Congratulations: {p.congratulation}""")
-    await c.clean()
+    await c.answer()
         
 @dp.callback_query_handler(text='output_products')
 async def output_products(c: types.CallbackQuery):
@@ -60,4 +60,4 @@ async def output_products(c: types.CallbackQuery):
 Name: {p.name}
 Price: {p.price}
 Description: {p.description}""")
-    await c.clean()
+    await c.answer()

@@ -214,7 +214,7 @@ async def del_data(c: types.CallbackQuery, state: FSMContext):
     await c.message.delete()
     await c.message.answer('Хорошо, ваши данные удалены!')
     await state.finish()
-    await c.clean()
+    await c.answer()
 
 
 @dp.callback_query_handler(text='send_data', state=Start.born_city)
@@ -320,7 +320,7 @@ async def send_data(c: types.CallbackQuery, state: FSMContext):
     if c_d["sphere"] == "Воспитание ребенка 👶":
         pass
     await state.finish()
-    await c.clean()
+    await c.answer()
 
 
 @dp.callback_query_handler(text_startswith='choice_data')
@@ -349,4 +349,4 @@ async def choice_data(c: types.CallbackQuery, state: FSMContext):
             pass
         if item.sphere == "Воспитание ребенка 👶":
             pass
-    await c.clean()
+    await c.answer()

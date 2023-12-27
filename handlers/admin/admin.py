@@ -46,7 +46,7 @@ async def admin_start(m: types.Message):
 @dp.callback_query_handler(text='check_recs_regs')
 async def check_recs_regs(c: types.CallbackQuery):
     await c.message.answer('Хорошо, выберите категорию', reply_markup=TypesBaseRegistration.ikb)
-    await c.clean()
+    await c.answer()
 
 @dp.callback_query_handler(text_startswith='type_reg:')
 async def choice_sphere(c: types.CallbackQuery):
@@ -58,5 +58,5 @@ async def choice_sphere(c: types.CallbackQuery):
                                f'<b>Дата рождения:</b> {item.born_date}\n'
                                f'<b>Время рождения:</b> {item.born_time}\n'
                                f'<b>Город рождения:</b> {item.born_city}')
-    await c.clean()
+    await c.answer()
 
