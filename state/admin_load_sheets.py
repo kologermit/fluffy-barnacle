@@ -9,3 +9,6 @@ class AuthorityInBusiness_Money_State(StatesGroup):
 
 class StrategyProfiles_Money_State(StatesGroup):
     stating = State()
+
+class Products_State(StatesGroup):
+    stating = State()

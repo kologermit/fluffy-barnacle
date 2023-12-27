@@ -3,14 +3,27 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 class AdminMenu:
     btn1 = InlineKeyboardButton(text='Посмотреть записи регистрации (Base)', callback_data='check_recs_regs')
-    btn2 = InlineKeyboardButton(text='Загрузка таблиц', callback_data='load_sheets')
-    ikb = InlineKeyboardMarkup(1).add(btn1, btn2)
+    btn2 = InlineKeyboardButton(text='Загрузка таблицы', callback_data='load_sheets')
+    btn3 = InlineKeyboardButton(text='Промотр таблицы', callback_data='output_sheets')
+    ikb = InlineKeyboardMarkup(1).add(btn1, btn2, btn3)
 
 class LoadSheets:
-    btn1 = InlineKeyboardButton(text='Описание по типам личности', callback_data='desc_of_type_persons')
-    btn2 = InlineKeyboardButton(text='Авторитеты в бизнесе', callback_data='desc_of_authory_in_business')
-    btn3 = InlineKeyboardButton(text='Стратегия профиля в бизнесе', callback_data='desc_of_strategy_profiles')
-    ikb = InlineKeyboardMarkup(1).add(btn1, btn2, btn3)
+    btns = [    
+        InlineKeyboardButton(text='Описание по типам личности', callback_data='desc_of_type_persons'),
+        InlineKeyboardButton(text='Авторитеты в бизнесе', callback_data='desc_of_authory_in_business'),
+        InlineKeyboardButton(text='Стратегия профиля в бизнесе', callback_data='desc_of_strategy_profiles'),
+        InlineKeyboardButton(text='Товары', callback_data='desc_of_products')
+    ]
+    ikb = InlineKeyboardMarkup(1).add(*btns)
+
+class OutputSheets:
+    btns = [
+        InlineKeyboardButton(text='Описание по типам личности', callback_data='output_type_persons'),
+        InlineKeyboardButton(text='Авторитеты в бизнесе', callback_data='output_authory_in_business'),
+        InlineKeyboardButton(text='Стратегия профиля в бизнесе', callback_data='output_strategy_profiles'),
+        InlineKeyboardButton(text='Товары', callback_data='output_products')
+    ]
+    ikb = InlineKeyboardMarkup(1).add(*btns)
 
 class TypesBaseRegistration:
     btn1 = InlineKeyboardButton(text='Деньги и карьера 💰', callback_data='type_reg:Деньги')

@@ -53,3 +53,9 @@ class StrategyProfiles_Money(Model):
     description = fields.CharField(max_length=4000)
     home_work = fields.CharField(max_length=4000)
     congratulation = fields.CharField(max_length=4000)
+
+class Products(Model):
+    id = fields.IntField(pk=True)
+    name = fields.CharField(max_length=100)
+    price = fields.FloatField()
+    description = fields.CharField(max_length=4000)

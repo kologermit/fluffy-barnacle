@@ -14,12 +14,6 @@ async def load_sheets(c: types.CallbackQuery):
     await c.message.answer('Хорошо, выберите таблицу:', reply_markup=LoadSheets.ikb)
 
 
-@dp.callback_query_handler(text='desc_of_type_persons')
-async def desc_of_type_persons(c: types.CallbackQuery, state: FSMContext):
-    await c.message.answer('Отлично, отправьте нужную таблицу:')
-    await state.set_state(TypePersonal_Money_State.stating.state)
-
-
 @dp.message_handler(state=TypePersonal_Money_State.stating, content_types=types.ContentTypes.DOCUMENT)
 async def desc_of_type_persons_load(m: types.Message, state: FSMContext):
     load_message = await m.answer("Началась загрузка базы сообщений...")
@@ -93,6 +87,11 @@ async def desc_of_strategy_profiles(c: types.CallbackQuery, state: FSMContext):
     await c.message.answer('Отлично, отправьте нужную таблицу:')
     await state.set_state(StrategyProfiles_Money_State.stating.state)
 
+@dp.callback_query_handler(text='desc_of_products')
+async def desc_of_products(c: types.CallbackQuery, state: FSMContext):
+    await c.message.answer('Отлично, отправьте нужную таблицу:')
+    await state.set_state(Products_State.stating.state)
+
 
 @dp.message_handler(state=StrategyProfiles_Money_State.stating, content_types=types.ContentTypes.DOCUMENT)
 async def strategy_profile(m: types.Message, state: FSMContext):
@@ -116,6 +115,42 @@ async def strategy_profile(m: types.Message, state: FSMContext):
             print(description)
             print(home_work)
             print(congratulation)
+        await dp.bot.edit_message_text(
+            "Отлично база сообщений загружена!",
+            chat_id=m.chat.id,
+            message_id=load_message.message_id
+        )
+    except Exception as e:
+        await m.answer(e)
+        await dp.bot.edit_message_text(
+            "При загрузке базы сообщений произошла ошибка. Проверьте структуру файла и повторите попытку.",
+            chat_id=m.chat.id,
+            message_id=load_message.message_id
+        )
+    await state.finish()
+
+
+@dp.callback_query_handler(text='desc_of_type_persons')
+async def desc_of_type_persons(c: types.CallbackQuery, state: FSMContext):
+    await c.message.answer('Отлично, отправьте нужную таблицу:')
+    await state.set_state(TypePersonal_Money_State.stating.state)
+
+@dp.message_handler(state=Products_State.stating, content_types=types.ContentTypes.DOCUMENT)
+async def strategy_profile(m: types.Message, state: FSMContext):
+    load_message = await m.answer("Началась загрузка базы сообщений...")
+    try:
+        await Products.all().delete()
+        file = await dp.bot.get_file(m.document.file_id)
+        await dp.bot.download_file(file.file_path, "menu.xlsx")
+        wb = load_workbook("menu.xlsx")
+        sheet = wb.active
+        for cells in sheet.iter_rows():
+            items = [cell for cell in cells]
+            name, price, description = (item.value for item in items)
+            await Products.create(name=name, price=price, description=description)
+            print(name)
+            print(price)
+            print(description)
         await dp.bot.edit_message_text(
             "Отлично база сообщений загружена!",
             chat_id=m.chat.id,
