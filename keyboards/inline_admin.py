@@ -3,9 +3,8 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 class AdminMenu:
     btn1 = InlineKeyboardButton(text='Посмотреть записи регистрации (Base)', callback_data='check_recs_regs')
-    btn2 = InlineKeyboardButton(text='Загрузка таблицы', callback_data='load_sheets')
-    btn3 = InlineKeyboardButton(text='Промотр таблицы', callback_data='output_sheets')
-    ikb = InlineKeyboardMarkup(1).add(btn1, btn2, btn3)
+    btn2 = InlineKeyboardButton(text='Загрузка таблиц', callback_data='load_sheets')
+    ikb = InlineKeyboardMarkup(1).add(btn1, btn2)
 
 class LoadSheets:
     btns = [    
@@ -13,15 +12,6 @@ class LoadSheets:
         InlineKeyboardButton(text='Авторитеты в бизнесе', callback_data='desc_of_authory_in_business'),
         InlineKeyboardButton(text='Стратегия профиля в бизнесе', callback_data='desc_of_strategy_profiles'),
         InlineKeyboardButton(text='Товары', callback_data='desc_of_products')
-    ]
-    ikb = InlineKeyboardMarkup(1).add(*btns)
-
-class OutputSheets:
-    btns = [
-        InlineKeyboardButton(text='Описание по типам личности', callback_data='output_type_persons'),
-        InlineKeyboardButton(text='Авторитеты в бизнесе', callback_data='output_authory_in_business'),
-        InlineKeyboardButton(text='Стратегия профиля в бизнесе', callback_data='output_strategy_profiles'),
-        InlineKeyboardButton(text='Товары', callback_data='output_products')
     ]
     ikb = InlineKeyboardMarkup(1).add(*btns)
 

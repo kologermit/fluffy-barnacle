@@ -59,3 +59,44 @@ class Products(Model):
     name = fields.CharField(max_length=100)
     price = fields.FloatField()
     description = fields.CharField(max_length=4000)
+
+class BurnoutCenter_Money(Model):
+    id = fields.IntField(pk=True)
+    name = fields.CharField(max_length=200)
+    description = fields.CharField(max_length=4000)
+    home_work = fields.CharField(max_length=4000)
+
+class MaterialPlan_Money(Model):
+    id = fields.IntField(pk=True)
+    key = fields.CharField(max_length=100)
+    name = fields.CharField(max_length=200)
+    description = fields.CharField(max_length=4000)
+    home_work = fields.CharField(max_length=4000)
+
+class Mercury_Money(Model):
+    id = fields.IntField(pk=True)
+    key = fields.CharField(max_length=100)
+    name = fields.CharField(max_length=200)
+    description = fields.CharField(max_length=4000)
+
+class OpenNClosedCenters_Money(Model):
+    pass
+
+class VenusSpendMoney_Money(Model):
+    id = fields.IntField(pk=True)
+    key = fields.CharField(max_length=100)
+    name = fields.CharField(max_length=200)
+    description = fields.CharField(max_length=4000)
+
+class ThroughJupiter_Money(Model):
+    id = fields.IntField(pk=True)
+    key = fields.CharField(max_length=100)
+    name = fields.CharField(max_length=200)
+    description = fields.CharField(max_length=4000)
+
+class LinesJupiterAndProfilesThroughPrism_Money(Model):
+    id = fields.IntField(pk=True)
+    key = fields.CharField(max_length=100)
+    name = fields.CharField(max_length=200)
+    description_positive = fields.CharField(max_length=4000)
+    description_negative = fields.CharField(max_length=4000)

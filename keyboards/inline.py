@@ -1,41 +1,31 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram import types
+from aiogram.dispatcher import FSMContext
+
+from state import Steps
 
 
-class ShareOrReadyAuthority:
-    btn1 = InlineKeyboardButton(text='Обсудить в общем чате 🗣', url='https://t.me/c/2142529593/2')
-    btn2 = InlineKeyboardButton(text='Получить задание 📝', callback_data='give_me_task:authority')
-    ikb_text = InlineKeyboardMarkup(1).add(btn1, btn2)
+class UniversalIKB:
 
-    btn3 = InlineKeyboardButton(text='Выполнил!', callback_data='ready_first:authority')
-    ikb_work = InlineKeyboardMarkup(1).add(btn3)
+    @staticmethod
+    async def get_data_from_ikb(state: FSMContext):
+        check_on_keyboard = ':'.join(str(await state.get_state()).split(':')[1:2])
+        key = f"{':'.join(str(await state.get_state()).split(':')[1:2])[:-1] if ':'.join(str(await state.get_state()).split(':')[1:2])[-1:].isdigit() else ':'.join(str(await state.get_state()).split(':')[1:2])}"
+        ikb = []
+        if str(check_on_keyboard)[-1:].isdigit():
+            if str(check_on_keyboard)[-1:] == '1':
+                btn1 = InlineKeyboardButton(text='Обсудить в общем чате 🗣', url='https://t.me/c/2142529593/2')
+                btn2 = InlineKeyboardButton(text='Получить задание 📝', callback_data=f'give_me_task:{key}')
+                ikb = InlineKeyboardMarkup(1).add(btn1, btn2)
+            if str(check_on_keyboard)[-1:] == '2':
+                btn3 = InlineKeyboardButton(text='Выполнил!', callback_data=F'ready_first:{key}')
+                ikb = InlineKeyboardMarkup(1).add(btn3)
+        else:
+            btn4 = InlineKeyboardButton(text='Поделиться опытом 👍', url='https://t.me/c/2142529593/2')
+            btn5 = InlineKeyboardButton(text='Идём дальше 🚀', callback_data=f'go_next:{key}')
+            ikb = InlineKeyboardMarkup(1).add(btn4, btn5)
+        return ikb
 
-    btn4 = InlineKeyboardButton(text='Поделиться опытом 👍', url='https://t.me/c/2142529593/2')
-    btn5 = InlineKeyboardButton(text='Идём дальше 🚀', callback_data='go_next:profile')
-    ikb_congratulation = InlineKeyboardMarkup(1).add(btn4, btn5)
-
-class ShareOrReadyProfile:
-    btn1 = InlineKeyboardButton(text='Обсудить в общем чате 🗣', url='https://t.me/c/2142529593/2')
-    btn2 = InlineKeyboardButton(text='Получить задание 📝', callback_data='give_me_task:profile')
-    ikb_text = InlineKeyboardMarkup(1).add(btn1, btn2)
-
-    btn3 = InlineKeyboardButton(text='Выполнил!', callback_data='ready_first:profile')
-    ikb_work = InlineKeyboardMarkup(1).add(btn3)
-
-    btn4 = InlineKeyboardButton(text='Поделиться опытом 👍', url='https://t.me/c/2142529593/2')
-    btn5 = InlineKeyboardButton(text='Идём дальше 🚀', callback_data='go_next:end_and_buy')
-    ikb_congratulation = InlineKeyboardMarkup(1).add(btn4, btn5)
-
-class ShareOrReadyBuy:
-    btn1 = InlineKeyboardButton(text='Обсудить в общем чате 🗣', url='https://t.me/c/2142529593/2')
-    btn2 = InlineKeyboardButton(text='Получить задание 📝', callback_data='give_me_task:end_and_buy')
-    ikb_text = InlineKeyboardMarkup(1).add(btn1, btn2)
-
-    btn3 = InlineKeyboardButton(text='Выполнил!', callback_data='ready_first:end_and_buy')
-    ikb_work = InlineKeyboardMarkup(1).add(btn3)
-
-    btn4 = InlineKeyboardButton(text='Поделиться опытом 👍', url='https://t.me/c/2142529593/2')
-    btn5 = InlineKeyboardButton(text='Идём дальше 🚀', callback_data='go_next:end_and_buy:finish')
-    ikb_congratulation = InlineKeyboardMarkup(1).add(btn4, btn5)
 
 class NewOrOldData:
     btns = [

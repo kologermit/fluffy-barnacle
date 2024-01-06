@@ -54,6 +54,8 @@ def ikb_products(products: list):
 
 def ikb_choice_rate():
     kb_choice_rate = ReplyKeyboardMarkup(row_width=1, resize_keyboard=True, one_time_keyboard=True)
+    btn2 = KeyboardButton(text="Групповой тариф за 4990 рублей")
+    btn3 = KeyboardButton(text="Работа с наставником 14990 рублей")
     btn4 = KeyboardButton(text="Познакомиться с наставником 🤑")
     kb_choice_rate.add(btn4)
     return kb_choice_rate

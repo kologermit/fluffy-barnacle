@@ -1,4 +1,5 @@
 from openpyxl import load_workbook
+import logging
 
 from aiogram import types
 from aiogram.dispatcher import FSMContext
@@ -25,10 +26,11 @@ async def desc_of_type_persons_load(m: types.Message, state: FSMContext):
         wb = load_workbook("menu.xlsx")
         sheet = wb.active
         for cells in sheet.iter_rows():
-            items = [("-" if cell.value is None else cell.value) for cell in cells]
-            while len(items) < 4:
-                items.append("-")
-            key, text, home_work, congratulation = items
+            item = [cell for cell in cells]
+            key = item[0].value
+            text = item[1].value
+            home_work = item[2].value
+            congratulation = item[3].value
             await TypePersonal_Money.create(key=key, description=text, home_work=home_work, congratulation=congratulation)
         await dp.bot.edit_message_text(
             "Отлично база сообщений загружена!",
@@ -62,10 +64,11 @@ async def desc_of_authory_in_business_load(m: types.Message, state: FSMContext):
         wb = load_workbook("menu.xlsx")
         sheet = wb.active
         for cells in sheet.iter_rows():
-            items = [("-" if cell.value is None else cell.value) for cell in cells]
-            while len(items) < 4:
-                items.append("-")
-            key, text, home_work, congratulation = items
+            item = [cell for cell in cells]
+            key = item[0].value
+            text = item[1].value
+            home_work = item[2].value
+            congratulation = item[3].value
             await AuthorityInBusiness_Money.create(key=key, description=text, home_work=home_work, congratulation=congratulation)
         await dp.bot.edit_message_text(
             "Отлично база сообщений загружена!",
@@ -105,7 +108,8 @@ async def strategy_profile(m: types.Message, state: FSMContext):
         sheet = wb.active
         for cells in sheet.iter_rows():
             items = [("-" if cell.value is None else cell.value) for cell in cells]
-            while len(items) < 5:
+            logging.info(items)
+            if len(items) < 3:
                 items.append("-")
             key, name, description, home_work, congratulation = items
             await StrategyProfiles_Money.create(key=key, description=description, home_work=home_work, congratulation=congratulation, name=name)
@@ -146,6 +150,7 @@ async def strategy_profile(m: types.Message, state: FSMContext):
         sheet = wb.active
         for cells in sheet.iter_rows():
             items = [("-" if cell.value is None else cell.value) for cell in cells]
+            logging.info(items)
             if len(items) < 3:
                 items.append("-")
             name, price, description = items
@@ -159,6 +164,7 @@ async def strategy_profile(m: types.Message, state: FSMContext):
             message_id=load_message.message_id
         )
     except Exception as e:
+        logging.exception(e)
         await m.answer(e)
         await dp.bot.edit_message_text(
             "При загрузке базы сообщений произошла ошибка. Проверьте структуру файла и повторите попытку.",

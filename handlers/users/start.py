@@ -286,6 +286,7 @@ async def send_data(c: types.CallbackQuery, state: FSMContext):
                                   born_date=c_d["born_date"],
                                   born_time=c_d["born_time"],
                                   born_city=f'{c_d["born_city"]} - {city_id}',
+                                  born_city_id=city_id,
                                   subject_type_id=subject_type_id,
                                   subject_type_name=subject_type_name,
                                   personal_line_id=personal_line_id,
@@ -311,6 +312,7 @@ async def send_data(c: types.CallbackQuery, state: FSMContext):
                                f'Давай начнем прямо сейчас?\n\n'
                                f'Твой Фракталик 🫶',
                                reply_markup=ikb_start_right_now())
+        await state.set_state(Steps.authority1.state)
     if c_d["sphere"] == "Здоровье и жизненная энергия ⚡️":
         pass
     if c_d["sphere"] == "Отношения  (в разработке) ❤️ и 🤝":
@@ -319,7 +321,7 @@ async def send_data(c: types.CallbackQuery, state: FSMContext):
         pass
     if c_d["sphere"] == "Воспитание ребенка 👶":
         pass
-    await state.finish()
+    await state.set_state(Steps.authority1)
     await c.answer()
 
 
@@ -341,6 +343,7 @@ async def choice_data(c: types.CallbackQuery, state: FSMContext):
                                    f'Давай начнем прямо сейчас?\n\n'
                                    f'Твой Фракталик 🫶',
                                    reply_markup=ikb_start_right_now())
+            await state.set_state(Steps.authority1.state)
         if item.sphere == "Здоровье и жизненная энергия ⚡️":
             pass
         if item.sphere == "Отношения  (в разработке) ❤️ и 🤝":
